@@ -9,10 +9,19 @@
     "preview": "vp preview",
     "prepare": "vp config"
   },
+  "dependencies": {
+    "@types/node": "^26.0.1",
+    "@types/react": "^19.2.17",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
   "devDependencies": {
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
     "typescript": "~6.0.2",
     "vite": "catalog:",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
   },
   "devEngines": {
     "packageManager": {
