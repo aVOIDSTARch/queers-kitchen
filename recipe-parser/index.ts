@@ -34,7 +34,7 @@ export type {
 
   // Recipe card (listing pages)
   RecipeCardProps,
-} from "../../types/types";
+} from "./types";
 
 // ── Parser ────────────────────────────────────────────────────────────────────
 export { parseRecipeMarkdown } from "./parser";

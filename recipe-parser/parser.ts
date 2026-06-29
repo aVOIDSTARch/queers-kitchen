@@ -19,7 +19,7 @@ import type {
   IngredientRow,
   RecipeStep,
   RecipeNote,
-} from "../../types/types";
+} from "./types";
 
 // ─── Section extraction ───────────────────────────────────────────────────────
 

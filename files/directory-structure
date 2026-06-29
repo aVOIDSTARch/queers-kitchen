@@ -1,0 +1,32 @@
+queers-kitchen/
+├── index.html
+├── vite.config.ts          — React + apiPlugin + path aliases
+├── package.json            — React 19, React Router 7, Vite 6
+├── tsconfig.json
+├── measure-types.ts        — (from earlier session)
+├── measurements.ts         — (from earlier session)
+├── recipe-parser/          — (from earlier session)
+└── src/
+    ├── App.tsx             — BrowserRouter, routes, font injection
+    ├── main.tsx
+    ├── styles/global.css   — Full spicy-ninja token system
+    ├── lib/
+    │   ├── scenes.ts       — Zone accents, MeasurementSystem, randomZone()
+    │   ├── recipeFiles.ts  — fs read/write for assets/recipes/*.md
+    │   ├── scraper.ts      — URL scraper (JSON-LD → heuristic → graceful fail)
+    │   └── apiPlugin.ts    — Vite middleware: /api/recipes + /api/scrape
+    ├── hooks/useRecipes.ts — fetch hooks + saveRecipe/scrapeUrl
+    ├── components/
+    │   ├── scenes/         — ParallaxScene.tsx + all 8 SVG scenes
+    │   ├── nav/Nav.tsx     — Rail + mobile topbar, React Router Links
+    │   ├── ui/
+    │   │   ├── ThemeToggle.tsx  — Lantern toggle, localStorage persistence
+    │   │   └── ZoneLayout.tsx  — Fixed scene + spacer + content panel
+    │   └── recipe/
+    │       ├── Recipe.tsx      — Orchestrator, random zone on mount
+    │       ├── RecipeHeader.tsx — Title, tagline, meta, image with fallback
+    │       └── RecipeBody.tsx  — Controls, Ingredients, Instructions, Notes, Footer
+    └── pages/
+        ├── HomePage.tsx         — Recipe of the day + 3 nav cards
+        ├── RecipesPage.tsx      — Searchable recipe grid
+        └── RecipeDetailPage.tsx — Recipe page + AddRecipePage

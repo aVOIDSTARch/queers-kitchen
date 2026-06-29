@@ -23,7 +23,7 @@ import type {
   RecipeCardProps,
   CookbookIndexProps,
   ScaledRecipePageProps,
-} from "../../types/types";
+} from "./types";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

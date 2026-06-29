@@ -28,7 +28,7 @@ import {
   isEnglishVolumeUnit,
   type Measurement,
   type EnglishVolumeUnit,
-} from "../src/utils/measurements";
+} from "../measurements/measurements";
 
 // ─── Tolerance helper for floating-point comparisons ──────────────────────────
 

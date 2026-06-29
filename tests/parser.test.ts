@@ -4,13 +4,13 @@
  */
 
 import { describe, test, expect } from "vite-plus/test";
-import { parseRecipeMarkdown } from "../src/utils/parser/parser";
+import { parseRecipeMarkdown } from "../recipe-parser/parser";
 import {
   recipeToPageProps,
   recipeToCardProps,
   buildCookbookIndexProps,
   scaleRecipePageProps,
-} from "../src/utils/parser/props";
+} from "../recipe-parser/props";
 
 // ─── Real markdown from the Cookbook Google Drive folder ─────────────────────
 

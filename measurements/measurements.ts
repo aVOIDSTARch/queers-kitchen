@@ -12,7 +12,7 @@ import {
   FRACTIONS,
   ENGLISH_VOLUME_PROMOTION_CHAIN,
   ENGLISH_WEIGHT_PROMOTION_CHAIN,
-} from "../types/measure-types";
+} from "./measure-types";
 
 export type {
   EnglishVolumeUnit,
@@ -35,7 +35,7 @@ export type {
   MultiplyOptions,
   FormatOptions,
   ScaledMeasurement,
-} from "../types/measure-types";
+} from "./measure-types";
 
 export {
   UNIT_META,
@@ -45,7 +45,7 @@ export {
   FRACTIONS,
   ENGLISH_VOLUME_PROMOTION_CHAIN,
   ENGLISH_WEIGHT_PROMOTION_CHAIN,
-} from "../types/measure-types";
+} from "./measure-types";
 
 import type {
   EnglishVolumeUnit,
@@ -59,7 +59,7 @@ import type {
   MultiplyOptions,
   FormatOptions,
   ScaledMeasurement,
-} from "../types/measure-types";
+} from "./measure-types";
 
 // ─── Core Conversion Primitives ───────────────────────────────────────────────
 
