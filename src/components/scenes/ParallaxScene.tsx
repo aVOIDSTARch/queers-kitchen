@@ -1,11 +1,7 @@
 // src/components/scenes/ParallaxScene.tsx
-// Port of ParallaxScene.astro — drives CSS custom properties from scroll.
-// Each layer reads its var and translates vertically:
-//   --px-far  10% of scrollY  (sky, mountains)
-//   --px-mid  25% of scrollY  (trees, pagodas)
-//   --px-near 45% of scrollY  (buildings, close trees)
-//   --px-fg   65% of scrollY  (foreground ninja)
-// Mobile (≤768px): parallax disabled entirely.
+// Parallax scene container. Renders four depth layers as fixed SVG planes.
+// Layer CSS vars driven by scroll: --px-far, --px-mid, --px-near, --px-fg.
+// Mobile: parallax disabled, only near layer shown at low opacity.
 
 import { useEffect, useRef, type ReactNode } from "react";
 
@@ -17,6 +13,16 @@ interface Props {
   fg?: ReactNode;
 }
 
+const LAYER_STYLE: React.CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  width: "100%",
+  height: "100%",
+};
+
 export function ParallaxScene({ zone, far, mid, near, fg }: Props) {
   const sceneRef = useRef<HTMLDivElement>(null);
 
@@ -25,9 +31,6 @@ export function ParallaxScene({ zone, far, mid, near, fg }: Props) {
     if (!scene) return;
 
     const mq = window.matchMedia("(max-width: 768px)");
-    if (mq.matches) return;
-
-    let ticking = false;
 
     function updateParallax() {
       if (!scene) return;
@@ -36,89 +39,107 @@ export function ParallaxScene({ zone, far, mid, near, fg }: Props) {
       scene.style.setProperty("--px-mid", `${y * 0.25}px`);
       scene.style.setProperty("--px-near", `${y * 0.45}px`);
       scene.style.setProperty("--px-fg", `${y * 0.65}px`);
-      ticking = false;
     }
 
+    let ticking = false;
     function onScroll() {
       if (!ticking) {
-        requestAnimationFrame(updateParallax);
+        requestAnimationFrame(() => {
+          updateParallax();
+          ticking = false;
+        });
         ticking = true;
       }
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    updateParallax();
+    if (!mq.matches) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      updateParallax();
+    }
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <div
-      ref={sceneRef}
-      className="px-scene"
-      data-zone-scene={zone}
-      aria-hidden="true"
-      style={{
-        position: "fixed",
-        inset: "0 0 0 52px",
-        zIndex: 0,
-        pointerEvents: "none",
-        overflow: "hidden",
-      }}
-    >
+    <>
       <div
-        className="px-layer px-layer--far"
+        ref={sceneRef}
+        data-zone-scene={zone}
+        aria-hidden="true"
         style={{
-          position: "absolute",
-          inset: 0,
-          willChange: "transform",
-          transform: "translateY(var(--px-far, 0px))",
+          position: "fixed",
+          top: 0,
+          left: 52,
+          right: 0,
+          bottom: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          overflow: "hidden",
         }}
       >
-        {far}
-      </div>
-      <div
-        className="px-layer px-layer--mid"
-        style={{
-          position: "absolute",
-          inset: 0,
-          willChange: "transform",
-          transform: "translateY(var(--px-mid, 0px))",
-        }}
-      >
-        {mid}
-      </div>
-      <div
-        className="px-layer px-layer--near"
-        style={{
-          position: "absolute",
-          inset: 0,
-          willChange: "transform",
-          transform: "translateY(var(--px-near, 0px))",
-        }}
-      >
-        {near}
-      </div>
-      <div
-        className="px-layer px-layer--fg"
-        style={{
-          position: "absolute",
-          inset: 0,
-          willChange: "transform",
-          transform: "translateY(var(--px-fg, 0px))",
-        }}
-      >
-        {fg}
+        {/* FAR — sky, distant mountains */}
+        <div
+          style={{
+            ...LAYER_STYLE,
+            transform: "translateY(var(--px-far, 0px))",
+            willChange: "transform",
+          }}
+        >
+          {far}
+        </div>
+
+        {/* MID — trees, pagodas, mid-ground */}
+        <div
+          style={{
+            ...LAYER_STYLE,
+            transform: "translateY(var(--px-mid, 0px))",
+            willChange: "transform",
+          }}
+        >
+          {mid}
+        </div>
+
+        {/* NEAR — close foreground elements */}
+        <div
+          style={{
+            ...LAYER_STYLE,
+            transform: "translateY(var(--px-near, 0px))",
+            willChange: "transform",
+          }}
+        >
+          {near}
+        </div>
+
+        {/* FG — ninja figure */}
+        <div
+          style={{
+            ...LAYER_STYLE,
+            transform: "translateY(var(--px-fg, 0px))",
+            willChange: "transform",
+          }}
+        >
+          {fg}
+        </div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
-          .px-scene { inset: 0 !important; }
-          .px-layer { transform: none !important; }
-          .px-layer--far, .px-layer--mid, .px-layer--fg { opacity: 0; }
-          .px-layer--near { opacity: 0.18; }
+          [data-zone-scene] {
+            left: 0 !important;
+          }
+          [data-zone-scene] > div {
+            transform: none !important;
+          }
+          [data-zone-scene] > div:nth-child(1),
+          [data-zone-scene] > div:nth-child(2),
+          [data-zone-scene] > div:nth-child(4) {
+            opacity: 0;
+          }
+          [data-zone-scene] > div:nth-child(3) {
+            opacity: 0.18;
+          }
         }
       `}</style>
-    </div>
+    </>
   );
 }

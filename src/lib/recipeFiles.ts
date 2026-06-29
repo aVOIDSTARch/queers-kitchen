@@ -1,35 +1,27 @@
 // src/lib/recipeFiles.ts
-// Server-side (Vite/Node) helpers for reading and writing recipe markdown files.
-// All recipes live in src/assets/recipes/*.md
-// This module is imported only by Vite API routes / server-side code.
+// Read/write recipe markdown files from src/assets/recipes/.
+// Runs only in the Vite dev-server / Node context (never in the browser).
 
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import type { ParsedRecipe } from "../../recipe-parser/types";
-import { parseRecipeMarkdown } from "../../recipe-parser/parser";
+import { parseRecipeMarkdown } from "../../recipe-parser/parser.js";
+import type { ParsedRecipe } from "../../recipe-parser/types.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const RECIPES_DIR = path.resolve(__dirname, "../assets/recipes");
-
-// ─── Ensure directory exists ──────────────────────────────────────────────────
+// Resolve recipes dir relative to the project root (cwd when vite runs)
+const RECIPES_DIR = path.resolve(process.cwd(), "src/assets/recipes");
 
 async function ensureDir() {
   await fs.mkdir(RECIPES_DIR, { recursive: true });
 }
 
-// ─── List all recipes ─────────────────────────────────────────────────────────
-
 export async function listRecipeSlugs(): Promise<string[]> {
   await ensureDir();
   const entries = await fs.readdir(RECIPES_DIR);
   return entries
-    .filter((f) => f.endsWith(".md"))
-    .map((f) => f.replace(/\.md$/, ""))
+    .filter((f: string) => f.endsWith(".md"))
+    .map((f: string) => f.replace(/\.md$/, ""))
     .sort();
 }
-
-// ─── Read one recipe ──────────────────────────────────────────────────────────
 
 export async function readRecipe(slug: string): Promise<ParsedRecipe | null> {
   const filePath = path.join(RECIPES_DIR, `${slug}.md`);
@@ -42,8 +34,6 @@ export async function readRecipe(slug: string): Promise<ParsedRecipe | null> {
   }
 }
 
-// ─── Read all recipes ─────────────────────────────────────────────────────────
-
 export async function readAllRecipes(): Promise<ParsedRecipe[]> {
   const slugs = await listRecipeSlugs();
   const results = await Promise.allSettled(slugs.map(readRecipe));
@@ -55,27 +45,19 @@ export async function readAllRecipes(): Promise<ParsedRecipe[]> {
     .map((r) => r.value);
 }
 
-// ─── Write a recipe ───────────────────────────────────────────────────────────
-
 export async function writeRecipe(slug: string, markdown: string): Promise<void> {
   await ensureDir();
-  const filePath = path.join(RECIPES_DIR, `${slug}.md`);
-  await fs.writeFile(filePath, markdown, "utf-8");
+  await fs.writeFile(path.join(RECIPES_DIR, `${slug}.md`), markdown, "utf-8");
 }
 
-// ─── Delete a recipe ──────────────────────────────────────────────────────────
-
 export async function deleteRecipe(slug: string): Promise<boolean> {
-  const filePath = path.join(RECIPES_DIR, `${slug}.md`);
   try {
-    await fs.unlink(filePath);
+    await fs.unlink(path.join(RECIPES_DIR, `${slug}.md`));
     return true;
   } catch {
     return false;
   }
 }
-
-// ─── Slug utilities ───────────────────────────────────────────────────────────
 
 export function slugify(title: string): string {
   return title

@@ -63,11 +63,11 @@ export function HomePage() {
       <div className="home-shell">
         {/* ── Hero ──────────────────────────────────────────────────────── */}
         <div className="home-hero">
-          <p className="eyebrow">Queers Kitchen Cooperative</p>
+          <p className="eyebrow">Queer Council Collective</p>
           <h1 className="hero-heading home-title">
-            the <span style={{ color: "var(--cinnabar)" }}>kitchen</span>
+            the <span style={{ color: "var(--cinnabar)" }}>queer kitchen</span>
             <br />
-            collective
+            cooperative
           </h1>
           <p className="home-sub">
             A living cookbook, built in public. Recipes tested, annotated, and argued over — from

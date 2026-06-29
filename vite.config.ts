@@ -1,8 +1,37 @@
 import { defineConfig } from "vite-plus";
 import react from "@vitejs/plugin-react";
+import { playwright } from "vite-plus/test/browser-playwright";
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    projects: [
+      {
+        // Node unit tests: pure logic (measurements, recipe-parser).
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "node",
+          include: ["tests/**/*.test.ts"],
+          exclude: ["tests/e2e/**"],
+        },
+      },
+      {
+        // Browser e2e/smoke tests: real Chromium via Playwright.
+        extends: true,
+        test: {
+          name: "browser",
+          include: ["tests/e2e/**/*.test.tsx"],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+    ],
+  },
   staged: {
     "*": "vp check --fix",
   },

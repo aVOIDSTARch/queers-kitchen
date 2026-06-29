@@ -1,10 +1,9 @@
 // src/components/ui/ZoneLayout.tsx
-// Wraps a page with a fixed parallax scene behind and solid content panel
-// that slides up over the scene on scroll. Port of ZoneLayout.astro.
+// Fixed parallax scene backdrop + scrolling content panel.
 
 import type { ReactNode } from "react";
 import type { ZoneName } from "../../lib/scenes";
-import { ZONE_ACCENTS } from "../../lib/scenes";
+import { ZONE_ACCENTS, ZONE_SKY_COLORS } from "../../lib/scenes";
 import { SceneForZone } from "../scenes/Scenes";
 
 interface Props {
@@ -14,6 +13,7 @@ interface Props {
 
 export function ZoneLayout({ zone, children }: Props) {
   const a = ZONE_ACCENTS[zone];
+  const sky = ZONE_SKY_COLORS[zone];
 
   return (
     <div
@@ -27,15 +27,25 @@ export function ZoneLayout({ zone, children }: Props) {
         } as React.CSSProperties
       }
     >
-      {/* Fixed parallax scene */}
-      <div className="zone-scene">
-        <SceneForZone zone={zone} />
-      </div>
+      {/* Sky backdrop — fixed, behind scene layers */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: "0 0 0 52px",
+          zIndex: 0,
+          background: sky,
+          pointerEvents: "none",
+        }}
+      />
 
-      {/* Transparent spacer — scene visible through here */}
+      {/* Scene SVG layers — ParallaxScene is itself fixed */}
+      <SceneForZone zone={zone} />
+
+      {/* Transparent spacer so scene is visible before content */}
       <div className="zone-spacer" aria-hidden="true" />
 
-      {/* Solid content panel slides up over scene */}
+      {/* Solid content slides up over scene on scroll */}
       <div className="zone-content">{children}</div>
     </div>
   );

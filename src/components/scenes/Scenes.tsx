@@ -7,7 +7,14 @@ import { ParallaxScene } from "./ParallaxScene";
 const SVG_PROPS = {
   viewBox: "0 0 1200 800",
   preserveAspectRatio: "xMidYMax meet",
-  style: { position: "absolute" as const, bottom: 0, left: 0, width: "100%", height: "100%" },
+  style: {
+    display: "block",
+    width: "100%",
+    height: "100%",
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+  },
 };
 
 // ─── SceneDojo ────────────────────────────────────────────────────────────────

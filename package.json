@@ -19,10 +19,14 @@
   "devDependencies": {
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/browser": "4.1.9",
+    "@vitest/browser-playwright": "4.1.9",
+    "playwright": "^1.61.1",
     "typescript": "~6.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:",
-    "vitest": "catalog:"
+    "vitest": "catalog:",
+    "vitest-browser-react": "^2.2.0"
   },
   "devEngines": {
     "packageManager": {
