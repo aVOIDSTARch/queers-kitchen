@@ -10,6 +10,7 @@ import type {
   NoteItemProps,
 } from "../../../recipe-parser";
 import type { MeasurementSystem } from "../../lib/scenes";
+import { displayQty } from "../../lib/ingredientQty";
 
 // ─── Controls ─────────────────────────────────────────────────────────────────
 
@@ -200,7 +201,13 @@ interface IngredientsProps {
   zoneAccent: string;
 }
 
-export function Ingredients({ groups, totalCount, zoneAccent }: IngredientsProps) {
+export function Ingredients({
+  groups,
+  totalCount,
+  measurementSystem,
+  scaleFactor,
+  zoneAccent,
+}: IngredientsProps) {
   return (
     <section
       className="recipe-ingredients"
@@ -217,7 +224,11 @@ export function Ingredients({ groups, totalCount, zoneAccent }: IngredientsProps
           <ul className="ingredient-list">
             {group.ingredients.map((row) => (
               <li key={row.index} className="ingredient-row" data-index={row.index}>
-                {row.qty && <span className="ingredient-qty">{row.qty}</span>}
+                {row.qty && (
+                  <span className="ingredient-qty">
+                    {displayQty(row.qty, scaleFactor, measurementSystem)}
+                  </span>
+                )}
                 <span className="ingredient-name">{row.name}</span>
               </li>
             ))}

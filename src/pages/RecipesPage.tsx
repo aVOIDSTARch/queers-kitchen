@@ -159,7 +159,7 @@ export function RecipesPage() {
 }
 
 function RecipeCard({ recipe }: { recipe: ParsedRecipe }) {
-  const slug = slugify(recipe.title);
+  const slug = recipe.slug ?? slugify(recipe.title);
   const zone = zoneForSlug(slug);
   const accent = ZONE_ACCENTS[zone].accent;
   const kanji = ZONE_ACCENTS[zone].kanji;

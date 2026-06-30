@@ -80,6 +80,13 @@ export interface ParsedRecipe {
   notes: RecipeNote[];
   /** Raw markdown source, preserved for debugging or re-rendering */
   rawMarkdown: string;
+  /**
+   * Canonical filename-derived slug (e.g. "celeriac-kimchi-remoulade").
+   * Attached by the file loader (recipeFiles), not the markdown parser, so it
+   * matches the on-disk filename the API reads/writes by. Use this for routing
+   * rather than slugifying the title, which often diverges from the filename.
+   */
+  slug?: string;
 }
 
 // ─── React component prop types ───────────────────────────────────────────────

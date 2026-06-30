@@ -27,7 +27,9 @@ export async function readRecipe(slug: string): Promise<ParsedRecipe | null> {
   const filePath = path.join(RECIPES_DIR, `${slug}.md`);
   try {
     const raw = await fs.readFile(filePath, "utf-8");
-    return parseRecipeMarkdown(raw, `${slug}.md`);
+    // Attach the canonical filename slug so the client routes by filename
+    // (the API reads/writes files by slug) rather than guessing from the title.
+    return { ...parseRecipeMarkdown(raw, `${slug}.md`), slug };
   } catch (err: unknown) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw err;

@@ -40,8 +40,13 @@ export async function scrapeRecipeUrl(url: string): Promise<ScrapeResult> {
   try {
     const res = await fetch(url, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; QKC-Cookbook-Bot/1.0)",
-        Accept: "text/html,application/xhtml+xml,*/*;q=0.9",
+        // Many recipe sites (WordPress + bot protection) 403 an obvious bot UA.
+        // This is a user-initiated single-page import, so present as a real browser.
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
+          "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
       },
       signal: AbortSignal.timeout(15_000),
     });

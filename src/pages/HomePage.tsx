@@ -49,13 +49,14 @@ export function HomePage() {
     return recipes[seed % recipes.length];
   }, [recipes]);
 
-  const rotdSlug = rotd
-    ? rotd.title
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/[\s_]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-    : "";
+  const rotdSlug =
+    rotd?.slug ??
+    rotd?.title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_]+/g, "-")
+      .replace(/^-+|-+$/g, "") ??
+    "";
   const rotdZone = rotdSlug ? zoneForSlug(rotdSlug) : "town-square";
 
   return (

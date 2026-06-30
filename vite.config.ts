@@ -1,9 +1,13 @@
 import { defineConfig } from "vite-plus";
 import react from "@vitejs/plugin-react";
 import { playwright } from "vite-plus/test/browser-playwright";
+import { apiPlugin } from "./src/lib/apiPlugin";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), apiPlugin()],
+  server: {
+    allowedHosts: ["cook.fail.academy"],
+  },
   test: {
     projects: [
       {
